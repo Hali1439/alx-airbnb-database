@@ -58,4 +58,4 @@ This document defines the key entities and relationships for the Airbnb-style bo
 ---
 
 ## 🧰 ER Diagram
-![Airbnb ERD Diagram](ERD/airbnb-erd.png)
+![airbnb-erd.png]([ERD/airbnb-erd.png](https://github.com/Hali1439/alx-airbnb-database/blob/aae533ccd070d49ac48b03a4bc7ef8b6f113ea0a/ERD/airbnb-erd.png))
