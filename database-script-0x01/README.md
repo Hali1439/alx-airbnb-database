@@ -1,3 +1,29 @@
+# 🗄️ Airbnb Database Schema (DDL)
+
+This folder contains the SQL script for defining the relational schema of the Airbnb-style booking system.
+
+## 📁 Files
+
+- `schema.sql` — Contains all `CREATE TABLE` statements, constraints, and indexes for the database.
+- `README.md` — Explanation of the schema and normalization applied.
+
+## 📌 Tables Created
+
+1. **User** — Stores account and login details.
+2. **Property** — Stores host listings and related information.
+3. **Booking** — Tracks reservations and user stays.
+4. **Review** — User feedback and rating of properties.
+
+## ✅ Features
+
+- **3NF-compliant design**
+- **Primary and Foreign Key constraints**
+- **Timestamps for audit/history**
+- **Enum field for booking status**
+- **Indexes for performance on foreign keys**
+
+
+
 # Airbnb Database Schema — `schema.sql`
 
 This file defines the full relational database schema for an Airbnb-like application.
