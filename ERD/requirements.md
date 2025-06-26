@@ -1,88 +1,67 @@
-# 📊 ER Diagram Requirements
+# 🗂️ Entity-Relationship Diagram (ERD)
 
-Welcome to the core of database sanity. This is your blueprint — a high-level, visual map of your Airbnb-like system. This file outlines **entity definitions**, **relationships**, and modeling best practices required to complete Task 0 of the ALX Database Project.
-
-## ✅ Project Goals
-
-- [ ] Identify **core entities** and their attributes.
-- [ ] Define **relationships** (1:1, 1:N, N:M) between those entities.
-- [ ] Include **keys** (primary, foreign) clearly.
-- [ ] Use **naming conventions** that are scalable and readable.
-- [ ] Validate the design reflects **normalization** up to 3NF.
-- [ ] Deliver the ERD in **Draw.io**, Lucidchart, or equivalent.
+This document defines the key entities and relationships for the Airbnb-style booking system database.
 
 ---
 
-## 🧱 Core Entities
+## 📦 Entities and Attributes
 
-You must include, at minimum:
+### 1. **User**
+- `id` (Primary Key)
+- `first_name`
+- `last_name`
+- `email`
+- `password`
+- `created_at`
+- `updated_at`
 
-- **User**
-  - Hosts, guests, and admins
-- **Property**
-  - Airbnb-style listings owned by users
-- **Booking**
-  - Reservation details
-- **Payment**
-  - Linked to bookings
-- **Review**
-  - User feedback for properties
-- **Message**
-  - User-to-user communication
+### 2. **Property**
+- `id` (Primary Key)
+- `owner_id` (Foreign Key → User)
+- `name`
+- `description`
+- `location`
+- `price_per_night`
+- `max_guests`
+- `created_at`
+- `updated_at`
 
----
+### 3. **Booking**
+- `id` (Primary Key)
+- `user_id` (Foreign Key → User)
+- `property_id` (Foreign Key → Property)
+- `check_in_date`
+- `check_out_date`
+- `total_price`
+- `status`
+- `created_at`
+- `updated_at`
 
-## 🔗 Entity Relationships
-
-> Think in relationships. Data without relationships is chaos.
-
-- A **User** can host many **Properties**
-- A **User** can book many **Properties** via **Bookings**
-- A **Booking** must be linked to one **User** and one **Property**
-- A **Booking** has exactly one **Payment**
-- A **User** can leave many **Reviews**, each on a **Property**
-- A **User** can send many **Messages** to another **User**
-
----
-
-## 🗃 ERD Conventions
-
-| Element         | Convention Example              |
-|----------------|----------------------------------|
-| Entity Name     | PascalCase (e.g., `User`)        |
-| Attribute Name  | snake_case (e.g., `email`)       |
-| Primary Key     | Ends with `_id` (e.g., `user_id`)|
-| Foreign Key     | Same name as target PK          |
-| Timestamp Fields| `created_at`, `updated_at`       |
-
----
-
-## 🧠 Visual Design Checklist
-
-- [ ] Each entity has a clearly defined primary key
-- [ ] All foreign keys are explicitly connected
-- [ ] Use crow’s foot notation or UML
-- [ ] ERD should be **exported as PNG and embedded or linked**
+### 4. **Review**
+- `id` (Primary Key)
+- `user_id` (Foreign Key → User)
+- `property_id` (Foreign Key → Property)
+- `rating`
+- `comment`
+- `created_at`
 
 ---
 
-## 📌 Submission
+## 🔗 Relationships
 
-- Place ERD file in this folder as: `ERD/airbnb_erd.drawio` or `airbnb_erd.png`
-- Keep this `requirements.md` updated if your model evolves
-- Ensure your diagram is consistent with `schema.sql`
-
----
-
-## 👑 Pro Tip
-
-**Design like you’re building for scale** — not for this project, but for a billion-dollar startup.
-
-- Avoid nullable foreign keys unless absolutely necessary
-- Plan for indexing where queries will hit most often
-- Think modular: relationships should be navigable from any angle
+- **User ↔ Booking**: One user can have many bookings.
+- **Property ↔ Booking**: One property can have many bookings.
+- **User ↔ Property**: One user (host) can own many properties.
+- **User ↔ Review**: One user can leave multiple reviews.
+- **Property ↔ Review**: One property can have many reviews.
 
 ---
 
+## 🧰 ER Diagram
 
 
+
+
+
+```markdown
+![Airbnb ER Diagram](./airbnb-erd.png)
