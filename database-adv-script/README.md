@@ -1,5 +1,7 @@
 # database-adv-script
-*contents
+## 📚 Table of Contents
+-[Join Queries - Airbnb Clone Database](#Join Queries - Airbnb Clone Database)
+- [Subqueries - Airbnb Clone Database](#Subqueries - Airbnb Clone Database)
 
 ## Join Queries - Airbnb Clone Database
 
@@ -42,10 +44,39 @@ The subquery is executed for each user, counting bookings where the `user_id` ma
 
 ### File List
 
+## Aggregations and Window Functions – Airbnb Clone Database
+
+This module demonstrates the use of SQL aggregation functions and window functions for data analysis within the Airbnb clone project.
+
+### Queries
+
+#### 1. Total Bookings by Each User
+
+**Description:**  
+This query retrieves the total number of bookings made by each user using the `COUNT()` aggregate function and `GROUP BY`.
+
+- **Function used:** COUNT
+- **Clause used:** GROUP BY
+- **Output:** User ID, Name, Total Bookings
+
+#### 2. Property Ranking by Total Bookings
+
+**Description:**  
+This query ranks all properties based on how many times they've been booked, using the `RANK()` window function.
+
+- **Functions used:** COUNT, RANK
+- **Clause used:** `OVER (ORDER BY COUNT(...) DESC)`
+- **Output:** Property ID, Title, Total Bookings, Rank
+
+### Files
+
+- `aggregations_and_window_functions.sql`: SQL queries
+- `README.md`: Documentation and explanations
+
 - `subqueries.sql`: Contains the SQL subqueries.
 
 
-### File List
+#### File List
 
 - `joins_queries.sql` — contains SQL JOIN queries.
 
