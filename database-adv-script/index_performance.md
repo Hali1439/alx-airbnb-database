@@ -9,27 +9,20 @@ Indexes were added on high-usage columns:
 
 ## Performance Measurement
 
-### Before Indexing
+### Before and After Indexing
 
 **Example Query:**  
 Find all bookings for a user in a date range:
+
 ```sql
+EXPLAIN ANALYZE
 SELECT * FROM bookings WHERE user_id = 42 AND booking_date BETWEEN '2025-01-01' AND '2025-01-31';
 ```
 
-**EXPLAIN Output (Before):**
-- Full table scan on `bookings` (no index used).
-- High cost for large datasets.
-
-### After Indexing
-
-**EXPLAIN Output (After):**
-- Index scan on `idx_bookings_user_id` and/or `idx_bookings_booking_date`.
-- Dramatic reduction in rows scanned and execution time.
-
-### Example: Join Query
+**Example Join Query:**
 
 ```sql
+EXPLAIN ANALYZE
 SELECT u.username, b.booking_id, p.property_name
 FROM bookings b
 JOIN users u ON b.user_id = u.user_id
@@ -37,9 +30,7 @@ JOIN properties p ON b.property_id = p.property_id
 WHERE p.city = 'London';
 ```
 
-**EXPLAIN Output:**
-- Uses `idx_properties_city` for fast city filtering.
-- Uses `idx_bookings_user_id` and `idx_bookings_property_id` for join efficiency.
+- Run these queries before and after adding indexes to compare execution plans and performance.
 
 ## Trade-Offs
 
@@ -56,4 +47,4 @@ WHERE p.city = 'London';
 ---
 
 **Recommendation:**  
-Regularly review query plans with `EXPLAIN` to ensure indexes are being used. Remove unused indexes to reduce write overhead and storage costs.
+Regularly review query plans with `EXPLAIN ANALYZE` to ensure indexes are being used. Remove unused indexes to reduce write overhead and storage costs.
