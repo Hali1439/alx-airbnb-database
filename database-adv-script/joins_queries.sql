@@ -1,86 +1,44 @@
+-- 1. INNER JOIN: Retrieve all bookings and their respective users.
+SELECT
+    b.booking_id,
+    b.property_id,
+    b.booking_date,
+    u.user_id,
+    u.username,
+    u.email
+FROM
+    bookings b
+INNER JOIN
+    users u ON b.user_id = u.user_id;
+-- Only returns bookings with a linked user (enforces referential integrity).
 
-## 📄 SQL Join Queries – Airbnb Clone Database
+-- 2. LEFT JOIN: Retrieve all properties and their reviews (including those with no reviews).
+SELECT
+    p.property_id,
+    p.property_name,
+    r.review_id,
+    r.review_text,
+    r.created_at AS review_date
+FROM
+    properties p
+LEFT JOIN
+    reviews r ON p.property_id = r.property_id;
+-- Includes properties with no reviews (review_id will be NULL).
 
-### 🔁 INNER JOIN – Retrieve all bookings and the respective users who made those bookings
-
-```sql
-SELECT 
-    users.id AS user_id,
-    users.name AS user_name,
-    bookings.id AS booking_id,
-    bookings.property_id,
-    bookings.start_date,
-    bookings.end_date
-FROM 
-    users
-INNER JOIN 
-    bookings 
-ON 
-    users.id = bookings.user_id;
-```
-
----
-
-### 🔗 LEFT JOIN – Retrieve all properties and their reviews, including properties that have no reviews
-
-```sql
-SELECT 
-    properties.id AS property_id,
-    properties.title,
-    reviews.id AS review_id,
-    reviews.rating,
-    reviews.comment,
-    CASE 
-        WHEN reviews.id IS NULL THEN 'No Reviews'
-        ELSE 'Has Reviews'
-    END AS review_status
-FROM 
-    properties
-LEFT JOIN 
-    reviews 
-ON 
-    properties.id = reviews.property_id;
-```
-
-> ✅ This version includes all properties, even those without reviews, and adds a `review_status` column to indicate review presence.
-
----
-
-### 🚫 FULL OUTER JOIN (MySQL workaround using UNION) – Retrieve all users and all bookings, even if no matching records exist
-
-> ⚠️ MySQL does not support `FULL OUTER JOIN`, so we use `UNION` of two `LEFT JOIN`s to simulate it.
-
-```sql
--- Users with or without bookings
-SELECT 
-    users.id AS user_id,
-    users.name AS user_name,
-    bookings.id AS booking_id,
-    bookings.property_id,
-    bookings.start_date
-FROM 
-    users
-LEFT JOIN 
-    bookings 
-ON 
-    users.id = bookings.user_id
-
-UNION
-
--- Bookings with or without users (simulates the other half of FULL OUTER JOIN)
-SELECT 
-    users.id AS user_id,
-    users.name AS user_name,
-    bookings.id AS booking_id,
-    bookings.property_id,
-    bookings.start_date
-FROM 
-    bookings
-LEFT JOIN 
-    users 
-ON 
-    users.id = bookings.user_id;
-```
-
----
-
+-- 3. FULL OUTER JOIN: Retrieve all users and all bookings, even if no booking/user link exists.
+-- Note: FULL OUTER JOIN support varies (use UNION of LEFT + RIGHT for MySQL).
+SELECT
+    u.user_id,
+    u.username,
+    b.booking_id,
+    b.property_id,
+    b.booking_date
+FROM
+    users u
+FULL OUTER JOIN
+    bookings b ON u.user_id = b.user_id
+-- For databases without FULL OUTER JOIN (e.g., MySQL), use:
+-- SELECT ... FROM users u LEFT JOIN bookings b ON ... 
+-- UNION
+-- SELECT ... FROM bookings b LEFT JOIN users u ON ...
+;
