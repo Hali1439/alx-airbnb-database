@@ -3,6 +3,7 @@
 
 - [Join Queries - Airbnb Clone Database](#join-queries---airbnb-clone-database)
 - [Subqueries - Airbnb Clone Database](#subqueries---airbnb-clone-database)
+- [Aggregations and Window Functions – Airbnb Clone Database](#aggregations-and-window-functions--airbnb-clone-database)
 
 ## Join Queries - Airbnb Clone Database
 
