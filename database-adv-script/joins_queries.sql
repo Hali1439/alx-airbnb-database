@@ -24,6 +24,18 @@ FROM
 LEFT JOIN
     reviews r ON p.property_id = r.property_id;
 -- Includes properties with no reviews (review_id will be NULL).
+SELECT
+    p.property_id,
+    p.property_name,
+    r.review_id,
+    r.review_text,
+    r.created_at AS review_date
+FROM
+    properties p
+LEFT JOIN
+    reviews r ON p.property_id = r.property_id
+ORDER BY
+    p.property_id, r.review_id;
 
 -- 3. FULL OUTER JOIN: Retrieve all users and all bookings, even if no booking/user link exists.
 -- Note: FULL OUTER JOIN support varies (use UNION of LEFT + RIGHT for MySQL).
