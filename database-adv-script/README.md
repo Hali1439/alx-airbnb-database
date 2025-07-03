@@ -1,4 +1,7 @@
-# Join Queries - Airbnb Clone Database
+# database-adv-script
+*contents
+
+## Join Queries - Airbnb Clone Database
 
 This directory contains advanced SQL queries demonstrating the use of various types of SQL joins on the Airbnb clone schema.
 
