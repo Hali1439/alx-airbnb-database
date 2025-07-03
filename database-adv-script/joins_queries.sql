@@ -48,4 +48,28 @@ FROM
     bookings
 LEFT JOIN 
     users ON users.id = bookings.user_id;
+SELECT 
+    properties.id AS property_id,
+    properties.title,
+    reviews.id AS review_id,
+    reviews.rating,
+    reviews.comment,
+    CASE 
+        WHEN reviews.id IS NULL THEN 'No Reviews'
+        ELSE 'Has Reviews'
+    END AS review_status
+FROM 
+    properties
+LEFT JOIN 
+    reviews ON properties.id = reviews.property_id;
+
+SELECT 
+    properties.id AS property_id,
+    properties.title
+FROM 
+    properties
+LEFT JOIN 
+    reviews ON properties.id = reviews.property_id
+WHERE 
+    reviews.id IS NULL;
 
