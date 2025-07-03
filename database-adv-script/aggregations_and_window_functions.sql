@@ -52,11 +52,11 @@ GROUP BY
     user_id;
 
 -- Query 2: Rank properties based on the total number of bookings they have received,
--- using COUNT and ROW_NUMBER window function
+-- using COUNT and RANK() window function
 SELECT
     property_id,
     COUNT(*) AS booking_count,
-    ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS booking_rank
+    RANK() OVER (ORDER BY COUNT(*) DESC) AS booking_rank
 FROM
     bookings
 GROUP BY
