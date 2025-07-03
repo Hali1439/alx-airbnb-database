@@ -81,5 +81,5 @@ CREATE INDEX idx_bookings_property_id ON bookings(property_id);
 
 ---
 
-**Note:  **
+Note:  
 Indexing is an ongoing process; always validate with real data and realistic concurrency. Monitor for index bloat and write slowdowns as data and workload evolve.
