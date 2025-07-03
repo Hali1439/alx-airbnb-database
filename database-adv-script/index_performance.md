@@ -1,61 +1,59 @@
-# Index Performance Optimization – Airbnb Clone Database
+# Index Performance Analysis
 
-## Objective
+## Indexing Strategy
 
-This document explains the rationale behind implementing indexes in the database and compares query performance before and after indexing.
+Indexes were added on high-usage columns:
+- `users.email` and `users.username`: for login and admin queries.
+- `bookings.user_id`, `bookings.property_id`, `bookings.booking_date`: for frequent joins, filters, and reporting.
+- `properties.city`: for location-based searches.
 
----
+## Performance Measurement
 
-## 🎯 Indexing Strategy
+### Before Indexing
 
-We analyzed commonly queried columns in the `users`, `bookings`, and `properties` tables based on JOINs, WHERE conditions, and ORDER BY clauses.
+**Example Query:**  
+Find all bookings for a user in a date range:
+```sql
+SELECT * FROM bookings WHERE user_id = 42 AND booking_date BETWEEN '2025-01-01' AND '2025-01-31';
+```
 
-### 📌 Users Table
-| Column | Usage |
-|--------|-------|
-| id     | JOINs (bookings.user_id = users.id) |
-| email  | WHERE clause for login/authentication |
+**EXPLAIN Output (Before):**
+- Full table scan on `bookings` (no index used).
+- High cost for large datasets.
 
-**Indexes Created**
-- `idx_users_id`
-- `idx_users_email`
+### After Indexing
 
----
+**EXPLAIN Output (After):**
+- Index scan on `idx_bookings_user_id` and/or `idx_bookings_booking_date`.
+- Dramatic reduction in rows scanned and execution time.
 
-### 📌 Bookings Table
-| Column        | Usage |
-|---------------|-------|
-| user_id       | JOIN with users |
-| property_id   | JOIN with properties |
-| created_at    | ORDER BY booking history |
-
-**Indexes Created**
-- `idx_bookings_user_id`
-- `idx_bookings_property_id`
-- `idx_bookings_created_at`
-
----
-
-### 📌 Properties Table
-| Column   | Usage |
-|----------|-------|
-| id       | JOINs with bookings |
-| location | WHERE clause for search |
-| price    | Filtering and ordering |
-
-**Indexes Created**
-- `idx_properties_id`
-- `idx_properties_location`
-- `idx_properties_price`
-
----
-
-## ⚙️ Performance Testing with EXPLAIN
-
-### Query Without Index
+### Example: Join Query
 
 ```sql
-EXPLAIN SELECT * 
-FROM bookings 
-JOIN users ON bookings.user_id = users.id 
-WHERE users.email = 'user@example.com';
+SELECT u.username, b.booking_id, p.property_name
+FROM bookings b
+JOIN users u ON b.user_id = u.user_id
+JOIN properties p ON b.property_id = p.property_id
+WHERE p.city = 'London';
+```
+
+**EXPLAIN Output:**
+- Uses `idx_properties_city` for fast city filtering.
+- Uses `idx_bookings_user_id` and `idx_bookings_property_id` for join efficiency.
+
+## Trade-Offs
+
+- **Improved read/query speed** for common access patterns.
+- **Slightly slower writes** (INSERT/UPDATE/DELETE) due to index maintenance.
+- **Additional storage** used for index structures.
+
+## Notes
+
+- Indexes must be monitored and adjusted as query patterns evolve.
+- Composite indexes (multi-column) may be required for more complex queries.
+- Avoid indexing columns with low selectivity (many duplicate values).
+
+---
+
+**Recommendation:**  
+Regularly review query plans with `EXPLAIN` to ensure indexes are being used. Remove unused indexes to reduce write overhead and storage costs.
