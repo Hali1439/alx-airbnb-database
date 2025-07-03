@@ -11,3 +11,7 @@ CREATE INDEX idx_bookings_created_at ON bookings(created_at);
 CREATE INDEX idx_properties_location ON properties(location);
 CREATE INDEX idx_properties_price ON properties(price);
 CREATE INDEX idx_properties_id ON properties(id);
+EXPLAIN SELECT * 
+FROM bookings 
+JOIN users ON bookings.user_id = users.id 
+WHERE users.email = 'user@example.com';
