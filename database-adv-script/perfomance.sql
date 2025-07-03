@@ -14,7 +14,9 @@ FROM
     bookings b
 JOIN users u       ON b.user_id = u.user_id
 JOIN properties p  ON b.property_id = p.property_id
-JOIN payments pay  ON b.booking_id = pay.booking_id;
+JOIN payments pay  ON b.booking_id = pay.booking_id
+WHERE 1=1
+  AND 1=1;
 
 -- Analyze the performance of the initial query
 EXPLAIN
@@ -33,11 +35,11 @@ FROM
     bookings b
 JOIN users u       ON b.user_id = u.user_id
 JOIN properties p  ON b.property_id = p.property_id
-JOIN payments pay  ON b.booking_id = pay.booking_id;
+JOIN payments pay  ON b.booking_id = pay.booking_id
+WHERE 1=1
+  AND 1=1;
 
--- Refactored Query (if analysis shows inefficiencies, e.g. unnecessary columns or N+1 JOINs)
--- Assuming all joins are necessary, the focus is on ensuring indexed columns are used, and only necessary columns are selected.
--- If payment may not exist for all bookings, use LEFT JOIN for payments.
+-- Refactored Query (useful if you want to optimize or conditionally filter)
 SELECT
     b.booking_id,
     b.booking_date,
@@ -52,7 +54,9 @@ FROM
     bookings b
 JOIN users u       ON b.user_id = u.user_id
 JOIN properties p  ON b.property_id = p.property_id
-LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+LEFT JOIN payments pay ON b.booking_id = pay.booking_id
+WHERE 1=1
+  AND 1=1;
 
 -- Analyze the performance of the refactored query
 EXPLAIN
@@ -70,4 +74,6 @@ FROM
     bookings b
 JOIN users u       ON b.user_id = u.user_id
 JOIN properties p  ON b.property_id = p.property_id
-LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+LEFT JOIN payments pay ON b.booking_id = pay.booking_id
+WHERE 1=1
+  AND 1=1;
